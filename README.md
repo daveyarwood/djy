@@ -27,7 +27,7 @@ Among the new utility functions is `char'` (on analogy with clojure.core's `+'`
 and other "enhanced" arithmetic operators that support arbitrary precision), an
 extension of `clojure.core/char` that will return a string containing a 
 supplementary character if provided with a codepoint above U+FFFF, 
-e.g. `(char' 135641)` => `𡇙` 
+e.g. `(char' 135641)` => 𡇙
 
 Another convenient function is `char-range`, which returns the range (inclusive)
 between two characters, e.g. `(char-range \a \z)` => `(\a \b \c ... \x \y \z)`.
