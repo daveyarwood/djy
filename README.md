@@ -44,7 +44,7 @@ this on the Clojure dev Google group -- will post a link here once I do that.
 
 Enjoy!
 
-- Dave Yarwood, 10/8/14
+\- Dave Yarwood, 10/8/14
 
 # To do:
 
