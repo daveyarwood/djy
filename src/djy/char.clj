@@ -44,9 +44,19 @@
   {:added "1.6"}
   class)
 
-(defmethod code-point-of java.lang.Long [x] x)
-(defmethod code-point-of java.lang.Character [x] (int x))
-(defmethod code-point-of java.lang.String [x] (.codePointAt ^String x 0))
+(defmethod code-point-of java.lang.Long
+  [n] 
+  {:pre [(<= 0 n 1114111)]} 
+  n)
+
+(defmethod code-point-of java.lang.Character 
+  [ch] 
+  (int ch))
+
+(defmethod code-point-of java.lang.String 
+  [^String s] 
+  {:pre [(not (empty? s))]}
+  (.codePointAt s 0))
 
 (defn char'
   "Like clojure.core/char, returns the character at a given code point. 
@@ -55,6 +65,7 @@
    char' will return the supplemental character (in string form) at that code point."
   {:added "1.6"}
   [n]
+  {:pre [(<= 0 n 1114111)]}
   (try
     (char n)
     (catch IllegalArgumentException e
@@ -113,10 +124,16 @@
 (defn char-range
   "Given two characters or code points, returns the range (inclusive) between them. 
    e.g. (char-range a z) => (a b c d e ... x y z) [imagine these are all characters]
-   Represents supplementary characters as strings."
+   Represents supplementary characters as strings.
+
+   As this function uses clojure.core/range internally, the result is a lazy seq.
+
+   Optionally takes a step as a third argument (defaults to 1)."
   {:added "1.6"}
-  [a z]
-  (map char' (range (code-point-of a) (inc (code-point-of z)))))
+  ([start end]
+    (char-range start end 1))
+  ([start end step]
+    (map char' (range (code-point-of start) (inc (code-point-of end)) step))))
 
 (declare supplementary?)
 
@@ -127,6 +144,7 @@
    broken up into their surrogate characters."
   {:added "1.6"}
   [s]
+  {:pre [(string? s)]}
   (when (seq s)
     (let [supplementary? (supplementary? (code-point-of s))]
       (cons (if supplementary? (subs s 0 2) (first s))
@@ -134,7 +152,7 @@
 
 (defn surrogates
   "Returns a seq containing the surrogate pair (high, low) for a supplementary character
-   (in string form) or code point. If given a BMP character or codepoint, returns a seq 
+   (in string form) or code point. If given a BMP character or code point, returns a seq 
    containing just that character."
   {:added "1.6"}
   [ch]
@@ -152,9 +170,6 @@
   {:added "1.6"}
   [ch]
   (Character/getName (code-point-of ch)))
-
-;; to do: char/mirror -- returns a mirrored character's pair, e.g. \) for \(
-;; (Character/isMirrored determines whether a character has a mirrored pair)
 
 ;;; Boolean functions ;;;
 
@@ -345,6 +360,7 @@
    Expects its argument to be a BMP character or code point."
   {:added "1.6"}
   [ch]
+  {:pre [(or (char? ch) (number? ch))]}
   (Character/toLowerCase ch))
 
 (defn upper-case
@@ -352,6 +368,7 @@
    Expects its argument to be a BMP character or code point."
   {:added "1.6"}
   [ch]
+  {:pre [(or (char? ch) (number? ch))]}
   (Character/toUpperCase ch))
 
 (defn title-case
@@ -359,4 +376,5 @@
    Expects its argument to be a BMP character or code point."
   {:added "1.6"}
   [ch]
+  {:pre [(or (char? ch) (number? ch))]}
   (Character/toTitleCase ch))

@@ -1,4 +1,4 @@
-# What's this?
+﻿# What's this?
 
 This is a library of character utility functions for Clojure, inspired by useful
 built-in string and character libraries from other languages, most significantly 
@@ -48,9 +48,4 @@ Enjoy!
 
 # To do:
 
-* Add a "mirror" function, which returns the mirror counterpart of a character
-if it has one. 
-
 * Write comprehensive, automated tests.
-
-* Refactor to add pre-/post-conditions.
