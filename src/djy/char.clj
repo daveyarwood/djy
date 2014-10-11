@@ -35,7 +35,8 @@
         * ASCII: characters in the range 0000-007F (0-127)
         * Latin-1: characters in the range 0080-00FF (0-255)"
       :author "Dave Yarwood"}
-  djy.char)
+  djy.char
+  (:require [clojure.string :as str]))
 
 ;;; Utility functions ;;;
 
@@ -164,18 +165,22 @@
   [ch]
   (str (java.lang.Character$UnicodeBlock/of (code-point-of ch))))
 
-(defn name
-  "Returns the Unicode name of the character or code point, or nil if the code point is 
-   unassigned."
-  {:added "1.6"}
-  [ch]
-  (Character/getName (code-point-of ch)))
+
+(comment
+  "This function requires JDK >= 1.7"
+  (defn name
+    "Returns the Unicode name of the character or code point, or nil if the code point is 
+     unassigned."
+    {:added "1.6"}
+    [ch]
+    (Character/getName (code-point-of ch)))
+)
 
 ;;; Boolean functions ;;;
 
 (defn defined?
   "Determines whether a character or code point is defined in Unicode, i.e. it has an entry
-   in the UnicodeData File, or has a value in a range defined by the UnicodeData file."
+   in the UnicodeData file, or has a value in a range defined by the UnicodeData file."
   {:added "1.6"}
   [ch]
   (Character/isDefined (code-point-of ch)))
@@ -238,12 +243,15 @@
       (<= 0 cp 31) 
       (<= 127 cp 159))))
 
-(defn alphabetic?
-  "Determines whether a character or code point is Alphabetic, as defined by the
-   Unicode standard."
-  {:added "1.6"}
-  [ch]
-  (Character/isAlphabetic (code-point-of ch)))
+(comment
+  "This function requires JDK >= 1.7"
+  (defn alphabetic?
+    "Determines whether a character or code point is Alphabetic, as defined by the
+     Unicode standard."
+    {:added "1.6"}
+    [ch]
+    (Character/isAlphabetic (code-point-of ch)))
+)
 
 (defn letter?
   "Determines whether a character or code point is a letter."
@@ -284,11 +292,14 @@
       (<= 65 cp 70)     ; A-F
       (<= 97 cp 102)))) ; a-f
 
-(defn ideograph?
-  "Determines whether a character or code point is a CKJV ideograph."
-  {:added "1.6"}
-  [ch]
-  (Character/isIdeographic (code-point-of ch)))
+(comment
+  "This function requires JDK >= 1.7"
+  (defn ideograph?
+    "Determines whether a character or code point is a CKJV ideograph."
+    {:added "1.6"}
+    [ch]
+    (Character/isIdeographic (code-point-of ch)))
+)
 
 (defn whitespace?
   "Determines whether a character or code point is a Java whitespace character."
