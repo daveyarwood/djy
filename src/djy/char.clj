@@ -36,7 +36,8 @@
         * Latin-1: characters in the range 0080-00FF (0-255)"
       :author "Dave Yarwood"}
   djy.char
-  (:require [clojure.string :as str]))
+  (:require [clojure.string :as str])
+  (:refer-clojure :exclude [next symbol?]))
 
 ;;; Utility functions ;;;
 
