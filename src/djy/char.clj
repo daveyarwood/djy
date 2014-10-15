@@ -46,7 +46,7 @@
   {:added "1.6"}
   class)
 
-(defmethod code-point-of java.lang.Long
+(defmethod code-point-of java.lang.Number
   [n] 
   {:pre [(<= 0 n 1114111)]} 
   n)
