@@ -9,7 +9,7 @@ Complicating matters is the inherent complexity of dealing with supplementary
 characters in the JVM; Java characters are 16-bit, allowing characters in the 
 Unicode range 0000-FFFF to be expressed as single characters. This range is 
 called the Basic Multilingual Plane (BMP), however the range of existent 
-characters has since expanding, bringing about the need for 32-bit characters. 
+characters has since expanded, bringing about the need for 32-bit characters. 
 Java's way of representing these supplementary characters is via pairs of 16-bit 
 characters, for a combined total of 32 bits. 
 
@@ -39,8 +39,9 @@ internally.
 My hope is that this library will end up in clojure.contrib or (my pipe dream)
 as a part of Clojure proper as "clojure.char."
 
-Feedback and suggests would be very welcome. I plan to start a discussion about
-this on the Clojure dev Google group -- will post a link here once I do that.
+Any feedback and suggestions would be very welcome -- feel free to join the 
+[discussion](https://groups.google.com/forum/#!topic/clojure-dev/CVT5nqCz9XI)
+going on the Clojure dev Google group.
 
 Enjoy!
 
@@ -49,3 +50,5 @@ Enjoy!
 # To do:
 
 * Write comprehensive, automated tests.
+* Remedy potential performance issues caused by dynamic type introspection, 
+[as noted by Mikera](https://groups.google.com/d/msg/clojure-dev/CVT5nqCz9XI/8oKdlmbOYk4J).
