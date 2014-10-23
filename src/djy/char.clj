@@ -41,24 +41,16 @@
 
 ;;; Utility functions ;;;
 
-(defmulti code-point-of 
-  "Returns the Unicode code point of a character."
-  {:added "1.6"}
-  class)
-
-(defmethod code-point-of java.lang.Number
-  [n] 
-  {:pre [(<= 0 n 1114111)]} 
-  n)
-
-(defmethod code-point-of java.lang.Character 
-  [ch] 
-  (int ch))
-
-(defmethod code-point-of java.lang.String 
-  [^String s] 
-  {:pre [(not (empty? s))]}
-  (.codePointAt s 0))
+(defprotocol HasCodePoint
+  (code-point-of [this] "Returns the Unicode code point of a character."))
+ 
+(extend-protocol HasCodePoint
+  java.lang.Number
+    (code-point-of [n] {:pre [(<= 0 n 1114111)]} n)
+  java.lang.Character
+    (code-point-of [ch] (int ch))
+  java.lang.String
+    (code-point-of [^String s] {:pre [(not (empty? s))]} (.codePointAt s 0)))
 
 (defn char'
   "Like clojure.core/char, returns the character at a given code point. 
