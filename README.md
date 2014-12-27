@@ -19,17 +19,18 @@ This library aims to provide convenient wrappers for standard Java Character
 library functions, as well as some new utility functions to facilitate working
 with characters.
 
-Many of these functions are polymorphic in nature, by way of a single
-multimethod, `code-point-of`, which can take as an argument a character, an
-integer representing a Unicode code point, or a string beginning with a
-supplementary character (i.e. two 16-bit Java characters). The focus in doing
-this is ease of use by the end-user.
+Many of these functions are polymorphic in nature, by way of a `HasCodePoint` 
+protocol exposing a `code-point-of` function, which can take as an argument a 
+character, an integer representing a Unicode code point, or a string beginning 
+with a supplementary character (i.e. two 16-bit Java characters). This allows
+us to work with BMP and supplementary characters without having to think about
+whether they are BMP or supplementary -- they're just characters™.
 
 Among the new utility functions is `char'` (on analogy with clojure.core's `+'`
 and other "enhanced" arithmetic operators that support arbitrary precision), an
 extension of `clojure.core/char` that will return a string containing a
 supplementary character if provided with a codepoint above U+FFFF,
-e.g. `(char' 135641)` => 𡇙
+e.g. `(char' 135641) => "𡇙"`"
 
 Another convenient function is `char-range`, which returns the range (inclusive)
 between two characters, e.g. `(char-range \a \z)` => `(\a \b \c ... \x \y \z)`.
