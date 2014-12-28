@@ -10,3 +10,4 @@ pom.xml.asc
 gpg.edn
 *~
 /.boot
+.java-version
