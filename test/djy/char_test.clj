@@ -1,33 +1,40 @@
 (ns djy.char-test
-  (:require [clojure.test :refer :all]
+  (:require [clojure.test.check.generators :as gen]
+            [clojure.test.check.properties :as prop]
+            [clojure.test.check.clojure-test :refer (defspec)]
             [djy.char :as char]))
 
-(defn- rand-range
-  "Generates a random integer between two integers x and y, exclusive."
-  [x y]
-  (+ (rand-int (- y x)) x))
+(def gen-bmp-char
+  (gen/fmap char (gen/choose 0 65535)))
 
-(defn- random-supplementary-char
-  "Generates a string containing a random supplementary character (U+10000-U+10FFFF)."
-  []
-  (let [high-surrogate (char (rand-range 55296 56320))
-        low-surrogate  (char (rand-range 56320 57344))]
-    (str high-surrogate low-surrogate)))
+(def gen-stringified-bmp-char
+  (gen/fmap str gen-bmp-char))
 
-(deftest input-test
-  (testing "code-point-of"
-    (testing "with code points from 0000-10FFFF (0-1114111)"
-      (let [code-points (repeatedly 100 #(rand-range 0 1114112))]
-        (is (= code-points (map char/code-point-of code-points)))))
-    (testing "with BMP character literals (0-65535)"
-      (let [code-points (repeatedly 100 #(rand-range 0 65536))
-            bmp-chars   (map char code-points)]
-        (is (= code-points (map char/code-point-of bmp-chars)))))
-    (testing "with BMP characters in string form"
-      (let [code-points (repeatedly 100 #(rand-range 0 65536))
-            bmp-strings (map (comp str char) code-points)]
-        (is (= code-points (map char/code-point-of bmp-strings)))))
-    (testing "with supplementary characters (as strings)"
-      (let [supplementary-chars (repeatedly 100 #(random-supplementary-char))]
-        (is (= (map #(.codePointAt % 0) supplementary-chars)
-               (map char/code-point-of supplementary-chars)))))))
+(def gen-high-surrogate
+  (gen/fmap char (gen/choose 55296 56319)))
+
+(def gen-low-surrogate
+  (gen/fmap char (gen/choose 56320 57343)))
+
+(def gen-supplementary-char
+  (gen/fmap #(apply str %) (gen/tuple gen-high-surrogate gen-low-surrogate)))
+
+(defspec code-point-of-an-integer-is-the-integer-itself
+  (prop/for-all [code-point (gen/choose 0 1114111)]
+    (= code-point
+       (char/code-point-of code-point))))
+
+(defspec code-point-of-a-bmp-character-is-its-code-point
+  (prop/for-all [bmp-char gen-bmp-char]
+    (= (int bmp-char)
+       (char/code-point-of bmp-char))))
+
+(defspec code-point-of-a-stringified-bmp-char-is-the-code-point-of-the-char
+  (prop/for-all [str-bmp-char gen-stringified-bmp-char]
+    (= (int (first str-bmp-char))
+       (char/code-point-of str-bmp-char))))
+
+(defspec code-point-of-a-supplementary-char-is-the-code-point-at-index-0
+  (prop/for-all [supplementary-char gen-supplementary-char]
+    (= (.codePointAt supplementary-char 0)
+       (char/code-point-of supplementary-char))))
