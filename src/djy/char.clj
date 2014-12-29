@@ -1,5 +1,5 @@
 (ns ^{:doc "A library of character-related utility functions for Clojure.
-  
+
         Note: There are several functions in this library that may collide with other
         namespaces. Recommended usage is:
             (ns your.namespace
@@ -8,14 +8,14 @@
         Many of these functions are polymorphic in that they can accept as an argument
         either a character, an integer representing a Unicode code point, or a string.
         If the argument is a string, the function uses the Unicode code point found at
-        index 0 of the string, and the rest of the string (if the string happens to be 
+        index 0 of the string, and the rest of the string (if the string happens to be
         longer than one Unicode code point) is ignored, e.g.:
 
             (code-point-of '\ud800\udc00') ;=> 65536
             (code-point-of 'hello')        ;=> 104 (the code point of 'h')
             [imagine that the single quotes above are double quotes]
 
-        When dealing with supplementary Unicode characters with code points higher than 
+        When dealing with supplementary Unicode characters with code points higher than
         U+FFFF, the character must be represented either as a String (e.g. '\ud800\udc00')
         or as a code point (e.g. 65536). This is due to the inherent limitations of 16-
         bit Java characters and the fact that Clojure character literals are built on top
@@ -24,7 +24,7 @@
         Glossary:
 
         * Code Point: any value in the Unicode codespace; that is, the range of integers
-             from 0 to 10FFFF (in decimal: 1114111). Not all code points are assigned to 
+             from 0 to 10FFFF (in decimal: 1114111). Not all code points are assigned to
              encoded characters.
         * Basic Multilingual Plane (BMP): Unicode characters in the range 0000-FFFF.
         * Supplementary characters: Unicode characters with code points > FFFF. Java
@@ -43,7 +43,7 @@
 
 (defprotocol HasCodePoint
   (code-point-of [this] "Returns the Unicode code point of a character."))
- 
+
 (extend-protocol HasCodePoint
   java.lang.Number
     (code-point-of [n] {:pre [(<= 0 n 1114111)]} n)
@@ -53,7 +53,7 @@
     (code-point-of [^String s] {:pre [(not (empty? s))]} (.codePointAt s 0)))
 
 (defn char'
-  "Like clojure.core/char, returns the character at a given code point. 
+  "Like clojure.core/char, returns the character at a given code point.
 
    Whereas char will throw an error if the code point is greater than 65535 (U+FFFF),
    char' will return the supplemental character (in string form) at that code point."
@@ -68,7 +68,7 @@
 (defn char<
   "Like clojure.core/<, but it converts its arguments (which are each expected to be
    a character, a code point, or a string containing a supplementary character) to code
-   points. Useful for determining whether a collection of characters is in order by code 
+   points. Useful for determining whether a collection of characters is in order by code
    point."
   {:added "1.6"}
   [& chs]
@@ -77,7 +77,7 @@
 (defn char>
   "Like clojure.core/>, but it converts its arguments (which are each expected to be
    a character, a code point, or a string containing a supplementary character) to code
-   points. Useful for determining whether a collection of characters is in order by code 
+   points. Useful for determining whether a collection of characters is in order by code
    point."
   {:added "1.6"}
   [& chs]
@@ -86,7 +86,7 @@
 (defn char<=
   "Like clojure.core/<=, but it converts its arguments (which are each expected to be
    a character, a code point, or a string containing a supplementary character) to code
-   points. Useful for determining whether a collection of characters is in order by code 
+   points. Useful for determining whether a collection of characters is in order by code
    point."
   {:added "1.6"}
   [& chs]
@@ -95,7 +95,7 @@
 (defn char>=
   "Like clojure.core/<=, but it converts its arguments (which are each expected to be
    a character, a code point, or a string containing a supplementary character) to code
-   points. Useful for determining whether a collection of characters is in order by code 
+   points. Useful for determining whether a collection of characters is in order by code
    point."
   {:added "1.6"}
   [& chs]
@@ -116,7 +116,7 @@
   (char' (inc (code-point-of ch))))
 
 (defn char-range
-  "Given two characters or code points, returns the range (inclusive) between them. 
+  "Given two characters or code points, returns the range (inclusive) between them.
    e.g. (char-range a z) => (a b c d e ... x y z) [imagine these are all characters]
    Represents supplementary characters as strings.
 
@@ -132,9 +132,9 @@
 (declare supplementary?)
 
 (defn char-seq
-  "Generates a lazy seq of characters from a string, appropriately handling 
-   supplementary characters by representing them as strings. Equivalent to (seq s), 
-   except that supplementary characters are represented in string form rather than 
+  "Generates a lazy seq of characters from a string, appropriately handling
+   supplementary characters by representing them as strings. Equivalent to (seq s),
+   except that supplementary characters are represented in string form rather than
    broken up into their surrogate characters."
   {:added "1.6"}
   [s]
@@ -146,7 +146,7 @@
 
 (defn surrogates
   "Returns a seq containing the surrogate pair (high, low) for a supplementary character
-   (in string form) or code point. If given a BMP character or code point, returns a seq 
+   (in string form) or code point. If given a BMP character or code point, returns a seq
    containing just that character."
   {:added "1.6"}
   [ch]
@@ -158,11 +158,10 @@
   [ch]
   (str (java.lang.Character$UnicodeBlock/of (code-point-of ch))))
 
-
 (comment
   "This function requires JDK >= 1.7"
   (defn name
-    "Returns the Unicode name of the character or code point, or nil if the code point is 
+    "Returns the Unicode name of the character or code point, or nil if the code point is
      unassigned."
     {:added "1.6"}
     [ch]
@@ -186,14 +185,14 @@
   (<= 0 (code-point-of ch) 65535))
 
 (defn supplementary?
-  "Determines whether a character or code point is a supplementary character, 
+  "Determines whether a character or code point is a supplementary character,
    i.e. code point in the range U+10000 through U+10FFFF."
   {:added "1.6"}
   [ch]
   (<= 65536 (code-point-of ch) 1114111))
 
 (defn high-surrogate?
-  "Determines whether a character or code point is in the high-surrogates range, 
+  "Determines whether a character or code point is in the high-surrogates range,
    i.e. U+D800 through U+DBFF."
   {:added "1.6"}
   [ch]
@@ -232,8 +231,8 @@
   {:added "1.6"}
   [ch]
   (let [cp (code-point-of ch)]
-    (or 
-      (<= 0 cp 31) 
+    (or
+      (<= 0 cp 31)
       (<= 127 cp 159))))
 
 (comment
@@ -268,7 +267,7 @@
     (or (Character/isLetter cp) (Character/isDigit cp))))
 
 (defn oct-digit?
-  "Determines whether a character or code point is an octal digit (0-7). 
+  "Determines whether a character or code point is an octal digit (0-7).
    Returns true only for ISO-LATIN-1 digits."
   {:added "1.6"}
   [ch]
@@ -306,13 +305,13 @@
   {:added "1.6"}
   [ch]
   (contains? #{Character/CONNECTOR_PUNCTUATION, Character/DASH_PUNCTUATION,
-               Character/START_PUNCTUATION, Character/END_PUNCTUATION, 
+               Character/START_PUNCTUATION, Character/END_PUNCTUATION,
                Character/INITIAL_QUOTE_PUNCTUATION, Character/FINAL_QUOTE_PUNCTUATION,
                Character/OTHER_PUNCTUATION}
              (Character/getType (code-point-of ch))))
 
 (defn mark?
-  "Determines whether a character or code point is a mark character, according to the 
+  "Determines whether a character or code point is a mark character, according to the
    Unicode standard."
   {:added "1.6"}
   [ch]
@@ -330,15 +329,15 @@
              (Character/getType (code-point-of ch))))
 
 (defn separator?
-  "Determines whether a character or code point is a separator, according to the Unicode 
+  "Determines whether a character or code point is a separator, according to the Unicode
    standard."
   {:added "1.6"}
   [ch]
-  (contains? #{Character/LINE_SEPARATOR, Character/PARAGRAPH_SEPARATOR, 
+  (contains? #{Character/LINE_SEPARATOR, Character/PARAGRAPH_SEPARATOR,
                Character/SPACE_SEPARATOR}
              (Character/getType (code-point-of ch))))
 
-  
+
 (defn lower-case?
   "Determines whether a character or code point is a lower-case letter."
   {:added "1.6"}
