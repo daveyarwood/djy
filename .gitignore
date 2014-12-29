@@ -11,3 +11,4 @@ gpg.edn
 *~
 /.boot
 .java-version
+.nrepl-history
