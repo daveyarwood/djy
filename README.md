@@ -19,9 +19,9 @@ This library aims to provide convenient wrappers for standard Java Character
 library functions, as well as some new utility functions to facilitate working
 with characters.
 
-Many of these functions are polymorphic in nature, by way of a `HasCodePoint` 
-protocol exposing a `code-point-of` function, which can take as an argument a 
-character, an integer representing a Unicode code point, or a string beginning 
+Many of these functions are polymorphic in nature, by way of a `HasCodePoint`
+protocol exposing a `code-point-of` function, which can take as an argument a
+character, an integer representing a Unicode code point, or a string beginning
 with a supplementary character (i.e. two 16-bit Java characters). This allows
 us to work with BMP and supplementary characters without having to think about
 whether they are BMP or supplementary -- they're just characters™.
@@ -52,6 +52,5 @@ Enjoy!
 
 # To do:
 
-* Write comprehensive, automated tests.
 * Remedy potential performance issues caused by dynamic type introspection,
 [as noted by Mikera](https://groups.google.com/d/msg/clojure-dev/CVT5nqCz9XI/8oKdlmbOYk4J).
