@@ -122,8 +122,14 @@
 
    As this function uses clojure.core/range internally, the result is a lazy seq.
 
-   Optionally takes a step as a third argument (defaults to 1)."
+   Emulates the behavior of clojure.core/range when given different numbers of
+   arguments. For example, an optional third argument can be provided as the step
+   (defaults to 1)."
   {:added "1.6"}
+  ([]
+    (cons (char 0) (lazy-seq (map (comp char' inc) (range)))))
+  ([end]
+    (char-range 0 end 1))
   ([start end]
     (char-range start end 1))
   ([start end step]
