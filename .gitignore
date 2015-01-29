@@ -12,3 +12,4 @@ gpg.edn
 /.boot
 .java-version
 .nrepl-history
+.DS_Store
