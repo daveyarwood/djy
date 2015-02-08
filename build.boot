@@ -10,7 +10,7 @@
 (require '[adzerk.bootlaces :refer :all]
          '[adzerk.boot-test :refer :all])
 
-(def +version+ "0.1.2")
+(def +version+ "0.1.3")
 (bootlaces! +version+)
 
 (deftask bench
@@ -27,8 +27,8 @@
        :description "A library of character utility functions for Clojure"
        :url "https://github.com/daveyarwood/djy"
        :scm {:url "https://github.com/daveyarwood/djy"}
-       :license {:name "Eclipse Public License"
-                 :url "http://www.eclipse.org/legal/epl-v10.html"}}
+       :license {"name" "Eclipse Public License"
+                 "url" "http://www.eclipse.org/legal/epl-v10.html"}}
   test  {:namespaces '#{djy.char-test}}
   bench {:namespaces '#{djy.char-benchmark djy.char-range-benchmark
                         djy.text-processing-benchmark}})
