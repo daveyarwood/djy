@@ -50,7 +50,7 @@
   java.lang.Character
     (code-point-of [ch] (int ch))
   java.lang.String
-    (code-point-of [^String s] {:pre [(not (empty? s))]} (.codePointAt s 0)))
+    (code-point-of [s] {:pre [(not (empty? s))]} (.codePointAt s 0)))
 
 (defn char'
   "Like clojure.core/char, returns the character at a given code point.
@@ -143,7 +143,7 @@
    except that supplementary characters are represented in string form rather than
    broken up into their surrogate characters."
   {:added "1.6"}
-  [s]
+  [^String s]
   {:pre [(string? s)]}
   (when (seq s)
     (let [supplementary? (supplementary? (code-point-of s))]
@@ -162,7 +162,7 @@
   "Returns the name of the Unicode block for the character or code point."
   {:added "1.6"}
   [ch]
-  (str (java.lang.Character$UnicodeBlock/of (code-point-of ch))))
+  (str (java.lang.Character$UnicodeBlock/of ^long (code-point-of ch))))
 
 (comment
   "This function requires JDK >= 1.7"
@@ -181,7 +181,7 @@
    in the UnicodeData file, or has a value in a range defined by the UnicodeData file."
   {:added "1.6"}
   [ch]
-  (Character/isDefined (code-point-of ch)))
+  (Character/isDefined ^long (code-point-of ch)))
 
 (defn bmp?
   "Determines whether a character or code point is in the Basic Multilingual Plane (BMP),
@@ -255,7 +255,7 @@
   "Determines whether a character or code point is a letter."
   {:added "1.6"}
   [ch]
-  (Character/isLetter (code-point-of ch)))
+  (Character/isLetter ^long (code-point-of ch)))
 
 (defn digit?
   "Determines whether a character or code point is a digit. A character is a digit if its
@@ -263,14 +263,14 @@
    including ISO-LATIN-1 digits, full-width digits, Devanagari digits, etc."
   {:added "1.6"}
   [ch]
-  (Character/isDigit (code-point-of ch)))
+  (Character/isDigit ^long (code-point-of ch)))
 
 (defn letter-or-digit?
   "Determines whether a character or code point is a letter or digit."
   {:added "1.6"}
   [ch]
   (let [cp (code-point-of ch)]
-    (or (Character/isLetter cp) (Character/isDigit cp))))
+    (or (Character/isLetter ^long cp) (Character/isDigit ^long cp))))
 
 (defn oct-digit?
   "Determines whether a character or code point is an octal digit (0-7).
@@ -303,7 +303,7 @@
   "Determines whether a character or code point is a Java whitespace character."
   {:added "1.6"}
   [ch]
-  (Character/isWhitespace (code-point-of ch)))
+  (Character/isWhitespace ^long (code-point-of ch)))
 
 (defn punctuation?
   "Determines whether a character or code point is a punctuation character, according to
@@ -314,7 +314,7 @@
                Character/START_PUNCTUATION, Character/END_PUNCTUATION,
                Character/INITIAL_QUOTE_PUNCTUATION, Character/FINAL_QUOTE_PUNCTUATION,
                Character/OTHER_PUNCTUATION}
-             (Character/getType (code-point-of ch))))
+             (Character/getType ^long (code-point-of ch))))
 
 (defn mark?
   "Determines whether a character or code point is a mark character, according to the
@@ -323,7 +323,7 @@
   [ch]
   (contains? #{Character/COMBINING_SPACING_MARK, Character/ENCLOSING_MARK,
                Character/NON_SPACING_MARK}
-             (Character/getType (code-point-of ch))))
+             (Character/getType ^long (code-point-of ch))))
 
 (defn symbol?
   "Determines whether a character or code point is a symbol character, according to the
@@ -332,7 +332,7 @@
   [ch]
   (contains? #{Character/MATH_SYMBOL, Character/CURRENCY_SYMBOL,
                Character/MODIFIER_SYMBOL, Character/OTHER_SYMBOL}
-             (Character/getType (code-point-of ch))))
+             (Character/getType ^long (code-point-of ch))))
 
 (defn separator?
   "Determines whether a character or code point is a separator, according to the Unicode
@@ -341,26 +341,26 @@
   [ch]
   (contains? #{Character/LINE_SEPARATOR, Character/PARAGRAPH_SEPARATOR,
                Character/SPACE_SEPARATOR}
-             (Character/getType (code-point-of ch))))
+             (Character/getType ^long (code-point-of ch))))
 
 
 (defn lower-case?
   "Determines whether a character or code point is a lower-case letter."
   {:added "1.6"}
   [ch]
-  (Character/isLowerCase (code-point-of ch)))
+  (Character/isLowerCase ^long (code-point-of ch)))
 
 (defn upper-case?
   "Determines whether a character or code point is an upper-case letter."
   {:added "1.6"}
   [ch]
-  (Character/isUpperCase (code-point-of ch)))
+  (Character/isUpperCase ^long (code-point-of ch)))
 
 (defn title-case?
   "Determines whether a character or code point is a title-case letter."
   {:added "1.6"}
   [ch]
-  (Character/isTitleCase (code-point-of ch)))
+  (Character/isTitleCase ^long (code-point-of ch)))
 
 ;;; Case conversion functions ;;;
 
@@ -369,21 +369,18 @@
    Expects its argument to be a BMP character or code point."
   {:added "1.6"}
   [ch]
-  {:pre [(or (char? ch) (number? ch))]}
-  (Character/toLowerCase ch))
+  (Character/toLowerCase ^long (code-point-of ch)))
 
 (defn upper-case
   "Converts a character to its upper-case counterpart, if it has one.
    Expects its argument to be a BMP character or code point."
   {:added "1.6"}
   [ch]
-  {:pre [(or (char? ch) (number? ch))]}
-  (Character/toUpperCase ch))
+  (Character/toUpperCase ^long (code-point-of ch)))
 
 (defn title-case
   "Converts a character to its lower-case counterpart, if it has one.
    Expects its argument to be a BMP character or code point."
   {:added "1.6"}
   [ch]
-  {:pre [(or (char? ch) (number? ch))]}
-  (Character/toTitleCase ch))
+  (Character/toTitleCase ^long (code-point-of ch)))
