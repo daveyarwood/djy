@@ -79,7 +79,7 @@
 (defspec char-less-than
   (prop/for-all [characters (gen/such-that #(and (not-empty %)
                                             (= (count %) (count (distinct %))))
-                         (gen/vector gen-char))]
+                              (gen/vector gen-char))]
     (apply char/char< (sort-by char/code-point-of characters))))
 
 ;;; testing char/prev
@@ -105,7 +105,7 @@
 
 (defspec char-range-is-like-range-for-characters
   (prop/for-all [[a b] (gen/such-that #(>= (count %) 2)
-                              (gen/vector gen-some-chars))]
+                         (gen/vector gen-some-chars))]
     (= (range (char/code-point-of a) (inc (char/code-point-of b)))
        (map char/code-point-of (char/char-range a b)))))
 

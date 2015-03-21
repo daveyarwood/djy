@@ -39,6 +39,11 @@
   (:require [clojure.string :as str])
   (:refer-clojure :exclude [next symbol?]))
 
+(defmacro in? [coll val]
+  (let [val-sym (gensym)]
+    `(let [~val-sym ~val]
+       (or ~@(for [x coll] `(= ~val-sym ~x))))))
+
 ;;; Utility functions ;;;
 
 (defprotocol HasCodePoint
@@ -310,38 +315,38 @@
    the Unicode standard."
   {:added "1.6"}
   [ch]
-  (contains? #{Character/CONNECTOR_PUNCTUATION, Character/DASH_PUNCTUATION,
-               Character/START_PUNCTUATION, Character/END_PUNCTUATION,
-               Character/INITIAL_QUOTE_PUNCTUATION, Character/FINAL_QUOTE_PUNCTUATION,
-               Character/OTHER_PUNCTUATION}
-             (Character/getType ^long (code-point-of ch))))
+  (in? #{Character/CONNECTOR_PUNCTUATION, Character/DASH_PUNCTUATION,
+         Character/START_PUNCTUATION, Character/END_PUNCTUATION,
+         Character/INITIAL_QUOTE_PUNCTUATION, Character/FINAL_QUOTE_PUNCTUATION,
+         Character/OTHER_PUNCTUATION}
+       (Character/getType ^long (code-point-of ch))))
 
 (defn mark?
   "Determines whether a character or code point is a mark character, according to the
    Unicode standard."
   {:added "1.6"}
   [ch]
-  (contains? #{Character/COMBINING_SPACING_MARK, Character/ENCLOSING_MARK,
-               Character/NON_SPACING_MARK}
-             (Character/getType ^long (code-point-of ch))))
+  (in? #{Character/COMBINING_SPACING_MARK, Character/ENCLOSING_MARK,
+         Character/NON_SPACING_MARK}
+       (Character/getType ^long (code-point-of ch))))
 
 (defn symbol?
   "Determines whether a character or code point is a symbol character, according to the
    Unicode standard."
   {:added "1.6"}
   [ch]
-  (contains? #{Character/MATH_SYMBOL, Character/CURRENCY_SYMBOL,
-               Character/MODIFIER_SYMBOL, Character/OTHER_SYMBOL}
-             (Character/getType ^long (code-point-of ch))))
+  (in? #{Character/MATH_SYMBOL, Character/CURRENCY_SYMBOL,
+         Character/MODIFIER_SYMBOL, Character/OTHER_SYMBOL}
+       (Character/getType ^long (code-point-of ch))))
 
 (defn separator?
   "Determines whether a character or code point is a separator, according to the Unicode
    standard."
   {:added "1.6"}
   [ch]
-  (contains? #{Character/LINE_SEPARATOR, Character/PARAGRAPH_SEPARATOR,
-               Character/SPACE_SEPARATOR}
-             (Character/getType ^long (code-point-of ch))))
+  (in? #{Character/LINE_SEPARATOR, Character/PARAGRAPH_SEPARATOR,
+         Character/SPACE_SEPARATOR}
+       (Character/getType ^long (code-point-of ch))))
 
 
 (defn lower-case?
@@ -369,18 +374,18 @@
    Expects its argument to be a BMP character or code point."
   {:added "1.6"}
   [ch]
-  (Character/toLowerCase ^long (code-point-of ch)))
+  (char (Character/toLowerCase ^long (code-point-of ch))))
 
 (defn upper-case
   "Converts a character to its upper-case counterpart, if it has one.
    Expects its argument to be a BMP character or code point."
   {:added "1.6"}
   [ch]
-  (Character/toUpperCase ^long (code-point-of ch)))
+  (char (Character/toUpperCase ^long (code-point-of ch))))
 
 (defn title-case
   "Converts a character to its lower-case counterpart, if it has one.
    Expects its argument to be a BMP character or code point."
   {:added "1.6"}
   [ch]
-  (Character/toTitleCase ^long (code-point-of ch)))
+  (char (Character/toTitleCase ^long (code-point-of ch))))

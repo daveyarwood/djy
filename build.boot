@@ -2,15 +2,15 @@
  :source-paths #{"src" "test" "benchmark"}
  :resource-paths #{"benchmark"}
  :dependencies '[[org.clojure/clojure "1.6.0"]
-                 [org.clojure/test.check "0.6.2"]
-                 [adzerk/bootlaces "0.1.9" :scope "test"]
-                 [adzerk/boot-test "1.0.3" :scope "test"]
+                 [org.clojure/test.check "0.7.0" :scope "test"]
+                 [adzerk/bootlaces "0.1.11" :scope "test"]
+                 [adzerk/boot-test "1.0.4" :scope "test"]
                  [criterium "0.4.3" :scope "test"]])
 
 (require '[adzerk.bootlaces :refer :all]
          '[adzerk.boot-test :refer :all])
 
-(def +version+ "0.1.3")
+(def +version+ "0.1.4")
 (bootlaces! +version+)
 
 (deftask bench
