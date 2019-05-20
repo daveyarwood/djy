@@ -141,6 +141,18 @@
   (prop/for-all [character gen-char]
     (string? (char/unicode-block-of character))))
 
+;;; testing category
+
+(defspec category-lower-case-letter
+  (prop/for-all [lower-case-letter gen-lower-case-letter]
+    (= (char/category lower-case-letter)
+       "Ll")))
+
+(defspec category-upper-case-letter
+  (prop/for-all [upper-case-letter gen-upper-case-letter]
+    (= (char/category upper-case-letter)
+       "Lu")))
+
 ;;; testing boolean functions
 
 (defspec defined?
