@@ -179,6 +179,13 @@
     (Character/getName (code-point-of ch)))
 )
 
+(defn category-int
+  "Returns an integer value indicating the general category of the given character or code
+   point."
+  {:added "1.6"}
+  [ch]
+  (Character/getType ^long (code-point-of ch)))
+
 ;;; Boolean functions ;;;
 
 (defn defined?
@@ -319,7 +326,7 @@
          Character/START_PUNCTUATION, Character/END_PUNCTUATION,
          Character/INITIAL_QUOTE_PUNCTUATION, Character/FINAL_QUOTE_PUNCTUATION,
          Character/OTHER_PUNCTUATION}
-       (Character/getType ^long (code-point-of ch))))
+       (category-int ch)))
 
 (defn mark?
   "Determines whether a character or code point is a mark character, according to the
@@ -328,7 +335,7 @@
   [ch]
   (in? #{Character/COMBINING_SPACING_MARK, Character/ENCLOSING_MARK,
          Character/NON_SPACING_MARK}
-       (Character/getType ^long (code-point-of ch))))
+       (category-int ch)))
 
 (defn symbol?
   "Determines whether a character or code point is a symbol character, according to the
@@ -337,7 +344,7 @@
   [ch]
   (in? #{Character/MATH_SYMBOL, Character/CURRENCY_SYMBOL,
          Character/MODIFIER_SYMBOL, Character/OTHER_SYMBOL}
-       (Character/getType ^long (code-point-of ch))))
+       (category-int ch)))
 
 (defn separator?
   "Determines whether a character or code point is a separator, according to the Unicode
@@ -346,7 +353,7 @@
   [ch]
   (in? #{Character/LINE_SEPARATOR, Character/PARAGRAPH_SEPARATOR,
          Character/SPACE_SEPARATOR}
-       (Character/getType ^long (code-point-of ch))))
+       (category-int ch)))
 
 
 (defn lower-case?
