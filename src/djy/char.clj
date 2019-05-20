@@ -179,6 +179,57 @@
     (Character/getName (code-point-of ch)))
 )
 
+(defn category-int
+  "Returns an integer value indicating the general category of the given character or code
+   point."
+  {:added "1.6"}
+  [ch]
+  (Character/getType ^long (code-point-of ch)))
+
+(def category-names
+  "A map where general category names are indexed by the associated integer constants."
+  {Character/UPPERCASE_LETTER "Lu"
+   Character/LOWERCASE_LETTER "Ll"
+   Character/TITLECASE_LETTER "Lt"
+   Character/MODIFIER_LETTER "Lm"
+   Character/OTHER_LETTER "Lo"
+
+   Character/NON_SPACING_MARK "Mn"
+   Character/COMBINING_SPACING_MARK "Mc"
+   Character/ENCLOSING_MARK "Me"
+
+   Character/DECIMAL_DIGIT_NUMBER "Nd"
+   Character/LETTER_NUMBER "Nl"
+   Character/OTHER_NUMBER "No"
+
+   Character/CONNECTOR_PUNCTUATION "Pc"
+   Character/DASH_PUNCTUATION "Pd"
+   Character/START_PUNCTUATION "Ps"
+   Character/END_PUNCTUATION "Pe"
+   Character/INITIAL_QUOTE_PUNCTUATION "Pi"
+   Character/FINAL_QUOTE_PUNCTUATION "Pf"
+   Character/OTHER_PUNCTUATION "Po"
+
+   Character/MATH_SYMBOL "Sm"
+   Character/CURRENCY_SYMBOL "Sc"
+   Character/MODIFIER_SYMBOL "Sk"
+   Character/OTHER_SYMBOL "So"
+
+   Character/SPACE_SEPARATOR "Zs"
+   Character/LINE_SEPARATOR "Zl"
+   Character/PARAGRAPH_SEPARATOR "Zp"
+
+   Character/CONTROL "Cc"
+   Character/FORMAT "Cf"
+   Character/SURROGATE "Cs"
+   Character/PRIVATE_USE "Co"
+   Character/UNASSIGNED "Cn"})
+
+(defn category
+  "Returns the name of the general category of the given character or code point."
+  [ch]
+  (get category-names (category-int ch)))
+
 ;;; Boolean functions ;;;
 
 (defn defined?
@@ -319,7 +370,7 @@
          Character/START_PUNCTUATION, Character/END_PUNCTUATION,
          Character/INITIAL_QUOTE_PUNCTUATION, Character/FINAL_QUOTE_PUNCTUATION,
          Character/OTHER_PUNCTUATION}
-       (Character/getType ^long (code-point-of ch))))
+       (category-int ch)))
 
 (defn mark?
   "Determines whether a character or code point is a mark character, according to the
@@ -328,7 +379,7 @@
   [ch]
   (in? #{Character/COMBINING_SPACING_MARK, Character/ENCLOSING_MARK,
          Character/NON_SPACING_MARK}
-       (Character/getType ^long (code-point-of ch))))
+       (category-int ch)))
 
 (defn symbol?
   "Determines whether a character or code point is a symbol character, according to the
@@ -337,7 +388,7 @@
   [ch]
   (in? #{Character/MATH_SYMBOL, Character/CURRENCY_SYMBOL,
          Character/MODIFIER_SYMBOL, Character/OTHER_SYMBOL}
-       (Character/getType ^long (code-point-of ch))))
+       (category-int ch)))
 
 (defn separator?
   "Determines whether a character or code point is a separator, according to the Unicode
@@ -346,7 +397,7 @@
   [ch]
   (in? #{Character/LINE_SEPARATOR, Character/PARAGRAPH_SEPARATOR,
          Character/SPACE_SEPARATOR}
-       (Character/getType ^long (code-point-of ch))))
+       (category-int ch)))
 
 
 (defn lower-case?
@@ -384,7 +435,7 @@
   (char (Character/toUpperCase ^long (code-point-of ch))))
 
 (defn title-case
-  "Converts a character to its lower-case counterpart, if it has one.
+  "Converts a character to its title-case counterpart, if it has one.
    Expects its argument to be a BMP character or code point."
   {:added "1.6"}
   [ch]
