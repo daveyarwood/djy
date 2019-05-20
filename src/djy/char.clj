@@ -384,7 +384,7 @@
   (char (Character/toUpperCase ^long (code-point-of ch))))
 
 (defn title-case
-  "Converts a character to its lower-case counterpart, if it has one.
+  "Converts a character to its title-case counterpart, if it has one.
    Expects its argument to be a BMP character or code point."
   {:added "1.6"}
   [ch]
