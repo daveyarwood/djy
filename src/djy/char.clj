@@ -227,6 +227,7 @@
 
 (defn category
   "Returns the name of the general category of the given character or code point."
+  {:added "1.6"}
   [ch]
   (get category-names (category-int ch)))
 
