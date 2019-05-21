@@ -10,7 +10,7 @@
 (require '[adzerk.bootlaces :refer :all]
          '[adzerk.boot-test :refer :all])
 
-(def +version+ "0.1.4")
+(def +version+ "0.2.0")
 (bootlaces! +version+)
 
 (deftask bench
@@ -19,7 +19,7 @@
   [n namespaces NAMESPACE #{sym} "Symbols of the namespaces to benchmark."]
   (with-pre-wrap fileset
     (doseq [ns namespaces] (require ns))
-     fileset))
+    fileset))
 
 (task-options!
   pom {:project 'djy
