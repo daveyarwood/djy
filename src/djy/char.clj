@@ -422,22 +422,19 @@
 ;;; Case conversion functions ;;;
 
 (defn lower-case
-  "Converts a character to its lower-case counterpart, if it has one.
-   Expects its argument to be a BMP character or code point."
+  "Returns the lower-case counterpart of the given character or code point."
   {:added "1.6"}
   [ch]
-  (char (Character/toLowerCase ^long (code-point-of ch))))
+  (char' (Character/toLowerCase ^long (code-point-of ch))))
 
 (defn upper-case
-  "Converts a character to its upper-case counterpart, if it has one.
-   Expects its argument to be a BMP character or code point."
+  "Returns the upper-case counterpart of the given character or code point."
   {:added "1.6"}
   [ch]
-  (char (Character/toUpperCase ^long (code-point-of ch))))
+  (char' (Character/toUpperCase ^long (code-point-of ch))))
 
 (defn title-case
-  "Converts a character to its title-case counterpart, if it has one.
-   Expects its argument to be a BMP character or code point."
+  "Returns the title-case counterpart of the given character or code point."
   {:added "1.6"}
   [ch]
-  (char (Character/toTitleCase ^long (code-point-of ch))))
+  (char' (Character/toTitleCase ^long (code-point-of ch))))
