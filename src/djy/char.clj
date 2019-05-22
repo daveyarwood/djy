@@ -226,10 +226,18 @@
    Character/UNASSIGNED "Cn"})
 
 (defn category
-  "Returns the name of the general category of the given character or code point."
+  "Returns the name of the general category of the given character or code point,
+   e.g. 'Nd' for a decimal number."
   {:added "1.6"}
   [ch]
   (get category-names (category-int ch)))
+
+(defn category-major
+  "Returns the name of the major general category of the given character or code point,
+   e.g. 'N' for a number."
+  {:added "1.6"}
+  [ch]
+  (subs (category ch) 0 1))
 
 ;;; Boolean functions ;;;
 

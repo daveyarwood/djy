@@ -154,6 +154,11 @@
     (= (char/category upper-case-letter)
        "Lu")))
 
+(defspec category-major-letter
+  (prop/for-all [letter gen-lower-case-letter]
+    (= (char/category-major letter)
+       "L")))
+
 ;;; testing boolean functions
 
 (defspec defined?
