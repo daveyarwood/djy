@@ -2,6 +2,7 @@
   (:require [clojure.test.check.generators :as gen]
             [clojure.test.check.properties :as prop]
             [clojure.test.check.clojure-test :refer (defspec)]
+            [clojure.test :refer [deftest is]]
             [djy.char :as char]))
 
 (def gen-bmp-char
@@ -194,3 +195,15 @@
   (prop/for-all [lower-case-letter gen-lower-case-letter]
     (= (char/upper-case lower-case-letter)
        (Character/toUpperCase lower-case-letter))))
+
+(deftest lower-case-supplementary
+  (is (= (char/lower-case "𐐄")
+         "𐐬"))
+  (is (= (char/lower-case "😀")
+         "😀")))
+
+(deftest upper-case-supplementary
+  (is (= (char/upper-case "𐐬")
+         "𐐄"))
+  (is (= (char/upper-case "😀")
+         "😀")))
