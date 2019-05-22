@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 0.2.1 (2019-05-21)
+
+* `lower-case`, `upper-case`, and `title-case` now work on characters above the
+  BMP range.
+
+  Thanks again, @nibe!
+
 ## 0.2.0 (2019-05-20)
 
 * Added a couple of convenience functions, `category-int` and `category`, which
