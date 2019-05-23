@@ -207,11 +207,3 @@
          "𐐄"))
   (is (= (char/upper-case "😀")
          "😀")))
-
-;;; testing normalization
-
-(deftest normalize
-  (is (= (char/normalize "ô" :nfd)
-         "ô"))
-  (is (= (char/normalize "ô" :nfc)
-         "ô")))
