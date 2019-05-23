@@ -438,3 +438,17 @@
   {:added "1.6"}
   [ch]
   (char' (Character/toTitleCase ^long (code-point-of ch))))
+
+;;; Normalization functions ;;;
+
+(def normalization-forms {:nfc java.text.Normalizer$Form/NFC
+                          :nfkc java.text.Normalizer$Form/NFKC
+                          :nfd java.text.Normalizer$Form/NFD
+                          :nfkd java.text.Normalizer$Form/NFKD})
+
+(defn normalize
+  "Normalizes the given character or string using the normalization form :nfc, :nfkc,
+   :nfd or :nfkd."
+  {:added "1.6"}
+  [s form]
+  (java.text.Normalizer/normalize (str s) (form normalization-forms)))
